@@ -9,6 +9,7 @@ public class User {
 	@Id
 	private Long id;
 	private String username;
+	private String password;
 
 	public Long getId() {
 		return this.id;
@@ -26,4 +27,11 @@ public class User {
 		this.username = username;
 	}
 
+	public String getPassword() {
+		return this.password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }

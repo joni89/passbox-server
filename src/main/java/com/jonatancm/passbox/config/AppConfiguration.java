@@ -4,6 +4,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -14,7 +17,8 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableSwagger2
-public class AppConfiguration {
+@EnableWebSecurity
+public class AppConfiguration extends WebSecurityConfigurerAdapter {
 
 	private static final String DB_URL = "jdbc:mysql://nestorrente.duckdns.org:6034/passbox?autoReconnect=true&useSSL=false";
 	private static final String DB_USERNAME = "root";
@@ -28,22 +32,7 @@ public class AppConfiguration {
 		dataSource.setUsername(DB_USERNAME);
 		dataSource.setPassword(DB_PASSWORD);
 		return dataSource;
-		// return DataSourceBuilder.create()
-		// 		.url(DB_URL)
-		// 		.username(DB_USERNAME)
-		// 		.password(DB_PASSWORD)
-		// 		.build();
 	}
-
-	// @Bean
-	// NamedParameterJdbcOperations operations() {
-	// 	return new NamedParameterJdbcTemplate(dataSource());
-	// }
-	//
-	// @Bean
-	// PlatformTransactionManager transactionManager() {
-	// 	return new DataSourceTransactionManager(dataSource());
-	// }
 
 	@Bean
 	public Docket api() {
@@ -54,4 +43,9 @@ public class AppConfiguration {
 				.build();
 	}
 
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManager() throws Exception {
+		return super.authenticationManager();
+	}
 }
